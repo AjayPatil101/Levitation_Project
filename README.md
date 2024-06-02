@@ -36,31 +36,20 @@ Note: The generated invoices should mirror the format from the below sample prov
 Backend (NodeJS):
 
 Set up a Node.js server using Express.js.
-
 Use MongoDB as the Database to store data.
-
 Implement required functionality for invoices.
-
 Ensure proper validation and error handling
-
 Include a feature to generate PDF invoices with a library called `puppeteer`
 
 Frontend (React):
 
 Create a React-based frontend for the Invoice Generator.
-
 TypeScript is mandatory
-
 Use Redux for State Management (optional)
-
 Design a user-friendly interface with components for creating new invoices
-
 Make use of Component based Architecture
-
 Implement form validation on the frontend.
-
 Integrate with the backend API to fetch and display invoice data.
-
 Include the ability to download generated invoices as PDF files
 
 Authentication :
