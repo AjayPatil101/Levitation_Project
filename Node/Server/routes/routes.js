@@ -19,7 +19,7 @@ router.get('/getProducts', jwtCheck.jwtCheck, productController.getProducts);
 router.put('/updateProduct/:id', jwtCheck.jwtCheck, productController.updateProduct);
 router.delete('/deleteProduct/:id', jwtCheck.jwtCheck, productController.deleteProduct);
 
-// PDF generation route (uncomment if needed)
-// router.get('/generate', jwtCheck.protect, pdfController.createPDF);
+// Define your route handler
+router.get('/generate', jwtCheck.jwtCheck, pdfController.createPDF);
 
 module.exports = router;
