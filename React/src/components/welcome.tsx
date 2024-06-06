@@ -12,6 +12,8 @@ const Welcome: React.FC = () => {
   const getProduct = () => {
     UserService.paginated()
       .then((response) => {
+        console.log(response);
+        
         setProducts(response.data.products);
       })
       .catch((error) => {
