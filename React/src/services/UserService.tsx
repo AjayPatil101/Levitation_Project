@@ -1,7 +1,7 @@
 // src/services/UserService.ts
 import axios, { AxiosResponse } from 'axios';
 
-const USER_BASE_REST_API_URL = 'http://localhost:8080';
+const USER_BASE_REST_API_URL = 'https://nodeapp-r65x.onrender.com';
 
 class UserService {
   private token: string;
@@ -41,15 +41,17 @@ class UserService {
     };
     return axios.get(`${USER_BASE_REST_API_URL}/getProducts`, { headers });
   };
-  download = (): Promise<AxiosResponse> => {
+  download = (): Promise<AxiosResponse<Blob>> => {
     const headers = {
-      Authorization: `Bearer ${this.token}`,
+        Authorization: `Bearer ${this.token}`,
     };
     console.log(1);
     
-    return axios.get(`${USER_BASE_REST_API_URL}/generate`, { headers });
-  };
-
+    return axios.get(`${USER_BASE_REST_API_URL}/generate`, {
+        headers,
+        responseType: 'blob', // Ensure the response is treated as a blob
+    });
+};
   delete = (id: string): Promise<AxiosResponse> => {
     const headers = {
       Authorization: `Bearer ${this.token}`,

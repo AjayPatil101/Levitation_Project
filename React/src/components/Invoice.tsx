@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import UserService from "../services/UserService";
-import { useNavigate } from 'react-router-dom';
 import "./Invoice.css"; // Import CSS styles
-
 const Invoice: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
   const [subtotal, setSubtotal] = useState<number>(0);
-  const navigate = useNavigate();
 
   useEffect(() => {
     getProduct();
@@ -32,16 +29,32 @@ const Invoice: React.FC = () => {
   };
   const download = () => {
     UserService.download()
-      .then((response) => {
-        console.log(response);
-        
-        navigate('/welcome');
-      })
-      .catch((error) => {
-        console.error("Error fetching products:", error);
-      });
-  };
+        .then((response) => {
+            if (response.data) {
+                // Create a blob from the response data
+                const blob = new Blob([response.data], { type: 'application/pdf' });
 
+                // Create a temporary URL for the blob
+                const url = window.URL.createObjectURL(blob);
+
+                // Create a link element and trigger a click event to download the PDF
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'invoice.pdf';
+                document.body.appendChild(link);
+                link.click();
+
+                // Clean up the URL and remove the link element
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(link);
+            } else {
+                console.error('No data in response');
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching products:', error);
+        });
+};
   return (
     <div className="wrapper">
       <div className="invoice_wrapper">
@@ -118,6 +131,9 @@ const Invoice: React.FC = () => {
         </div>
         <div className="footer_buttons">
         <button onClick={download}>Print</button>
+        {/* <Link to="/downlood">
+            <button>Print</button>
+          </Link> */}
         <Link to="/welcome">
             <button>Back</button>
           </Link>

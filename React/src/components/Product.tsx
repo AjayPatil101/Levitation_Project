@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductService from '../services/UserService'; // Corrected import statement
 import './loginSignUp.css'; // Import CSS file for additional styling
+import swal from 'sweetalert';
+
 
 const Products: React.FC = () => {
   const [name, setName] = useState('');
@@ -16,11 +18,20 @@ const Products: React.FC = () => {
 
     try {
       const response = await ProductService.insert(product);
-      console.log(response); // Debugging: Log the response to ensure it's being called
-      // You can add redirection or any other logic here after adding the product successfully
-      navigate('/welcome');
-    } catch (error) {
-      console.log('Error while adding product:', error);
+      console.log(response.data.success);
+      
+      if (response.data.success) {
+        swal("Good job!", "New product has been added.", "success");
+        navigate("/welcome");
+      } else {
+        swal("Oops!", response.data.message, "error");
+      }
+    } catch (error:any) {
+      swal("Oops!", error.response.data.message, "error"); // Adjust accordingly if the error structure is different
+      // if (error.response && error.response.data && error.response.data.message) {
+      // } else {
+      //   swal("Oops!", error.response.data.message, "error"); // Fallback error message
+      // }
     }
   };
 

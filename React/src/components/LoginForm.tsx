@@ -16,8 +16,6 @@ const LoginForm: React.FC = () => {
         // Use the correct endpoint for user signup
         try {
             const response = await UserService.signin(user);
-            console.log(response.data);
-            
             if (response.data.token) {
                 const { token, expiresIn } = response.data;
 
@@ -32,12 +30,13 @@ const LoginForm: React.FC = () => {
                 swal("Good job!", "You have successfully logged in!", "success");
                 navigate('/welcome');
             } else {
-                swal("Oops!", "Login failed!", "error");
+                swal("Oops!", "You have entered a wrong email or password!", "error");
             }
-        } catch (error) {
-            console.error(error);
-            swal("Oops!", "You have entered a wrong email or password!", "error");
-        }
+        } catch (error: any) {
+            
+              swal("Oops!", error.response.data.message, "error"); // Fallback error message
+            
+          }
 
     };
     const signup = async () => {

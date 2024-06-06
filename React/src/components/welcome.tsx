@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserService from "../services/UserService";
 import { Link } from "react-router-dom";
-
+import swal from 'sweetalert';
 const Welcome: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
 
@@ -33,7 +33,27 @@ const Welcome: React.FC = () => {
 
   const deleteProduct = async (id: string) => {
     try {
-      await UserService.delete(id);
+      
+
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure that you want to delete this product?",
+        icon: "warning",
+        dangerMode: true,
+    })
+    .then(async (willDelete) => {
+        if (willDelete) {
+            try {
+                await UserService.delete(id);
+                swal("Deleted!", "Product is deleted.", "success");
+                getProduct(); 
+            } catch (error) {
+                swal("Error", "Failed to delete product. Please try again later.", "error");
+                console.error("Error deleting product:", error);
+            }
+        }
+    });
+    
       getProduct(); // Refresh product list after deletion
     } catch (error) {
       console.error("Error deleting product:", error);
